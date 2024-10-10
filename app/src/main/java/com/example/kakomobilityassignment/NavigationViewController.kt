@@ -6,19 +6,22 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.kakomobilityassignment.presentation.ui.PathViewScreen
 import com.example.kakomobilityassignment.presentation.ui.PlaceListViewScreen
+import com.example.kakomobilityassignment.presentation.viewModel.LocationListViewModel
 
 @Composable
-fun NavigationViewController() {
+fun NavigationViewController(locationListViewModel: LocationListViewModel) {
 
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "PlaceListViewScreen") {
         composable("PlaceListViewScreen") {
-            PlaceListViewScreen(navigationToPathView = { origin, destination ->
-                navController.navigate(
-                    "PathViewScreen/${origin}/${destination}"
-                )
-            })
+            PlaceListViewScreen(
+                locationListViewModel = locationListViewModel,
+                navigationToPathView = { origin, destination ->
+                    navController.navigate(
+                        "PathViewScreen/${origin}/${destination}"
+                    )
+                })
         }
         composable("PathViewScreen/{origin}/{destination}") { backStackEntry ->
             val locationArguments = backStackEntry.arguments

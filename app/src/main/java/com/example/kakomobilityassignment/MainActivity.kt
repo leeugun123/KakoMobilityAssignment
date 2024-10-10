@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
+import com.example.kakomobilityassignment.presentation.viewModel.LocationListViewModel
 import com.example.kakomobilityassignment.ui.theme.KakoMobilityAssignmentTheme
 
 class MainActivity : ComponentActivity() {
@@ -14,9 +16,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        val locationListViewModel: LocationListViewModel by viewModels()
+
         setContent {
             KakoMobilityAssignmentTheme {
-                NavigationViewController()
+                NavigationViewController(locationListViewModel = locationListViewModel)
             }
         }
     }
@@ -26,6 +31,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     KakoMobilityAssignmentTheme {
-        NavigationViewController()
+        // NavigationViewController()
     }
 }

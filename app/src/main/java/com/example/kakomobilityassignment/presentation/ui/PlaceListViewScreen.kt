@@ -33,7 +33,7 @@ import com.example.kakomobilityassignment.ui.theme.departPlaceColor
 
 @Composable
 fun PlaceListViewScreen(
-    locationListViewModel: LocationListViewModel = LocationListViewModel(),
+    locationListViewModel: LocationListViewModel,
     navigationToPathView: (origin: String, destination: String) -> Unit
 ) {
     val locationList by locationListViewModel.locationList.collectAsState()
