@@ -14,14 +14,18 @@ fun NavigationViewController() {
 
     NavHost(navController = navController, startDestination = "PlaceListViewScreen") {
         composable("PlaceListViewScreen") {
-            PlaceListViewScreen(navigationToPathView = { origin ,destination ->
+            PlaceListViewScreen(navigationToPathView = { origin, destination ->
                 navController.navigate(
                     "PathViewScreen/${origin}/${destination}"
                 )
             })
         }
         composable("PathViewScreen/{origin}/{destination}") { backStackEntry ->
-            PathViewScreen(navBackStackEntry = backStackEntry)
+            val arguments = backStackEntry.arguments
+            PathViewScreen(
+                origin = arguments?.getString("origin") ?: "Unknown Place",
+                destination = arguments?.getString("destination") ?: "Unknown Place"
+            )
         }
     }
 }

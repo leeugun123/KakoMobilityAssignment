@@ -10,11 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 
 @Composable
-fun PathViewScreen(navBackStackEntry: NavBackStackEntry) {
-
-    val origin = navBackStackEntry.arguments?.getString("origin") ?: "Unknown"
-    val destination = navBackStackEntry.arguments?.getString("destination") ?: "Unknown"
-
+fun PathViewScreen(origin : String, destination : String) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
