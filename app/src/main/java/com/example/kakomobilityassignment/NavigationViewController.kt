@@ -21,10 +21,10 @@ fun NavigationViewController() {
             })
         }
         composable("PathViewScreen/{origin}/{destination}") { backStackEntry ->
-            val arguments = backStackEntry.arguments
+            val locationArguments = backStackEntry.arguments
             PathViewScreen(
-                origin = arguments?.getString("origin") ?: "Unknown Place",
-                destination = arguments?.getString("destination") ?: "Unknown Place"
+                origin = locationArguments?.getString("origin") ?: "Unknown Place",
+                destination = locationArguments?.getString("destination") ?: "Unknown Place"
             )
         }
     }
