@@ -31,8 +31,6 @@ class LocationListViewModel() : ViewModel() {
                 },
                 onError = { throwable ->
                     _errorMessage.value = throwable.message
-                    Log.e("TAG", throwable.message.toString())
-                    Log.e("TAG", throwable.cause.toString())
                 }
             )
         }

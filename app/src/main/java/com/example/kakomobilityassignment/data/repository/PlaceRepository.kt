@@ -33,10 +33,8 @@ class PlaceRepository {
                 response: Response<LocationResponse>
             ) {
                 if (response.isSuccessful) {
-                    Log.e("TAG","성공" + response.body()?.locationList?.size)
                     onSuccess(response.body()?.locationList ?: emptyList())
                 } else {
-                    Log.e("TAG","실패")
                     onError(Exception("Failed to load places"))
                 }
             }
