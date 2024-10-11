@@ -11,6 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.kakomobilityassignment.presentation.ScreenScaffoldTemplate
 import com.example.kakomobilityassignment.presentation.viewModel.PathViewModel
 
@@ -20,11 +21,11 @@ fun PathViewScreen(
     origin: String,
     destination: String
 ) {
-    val locationPathList by pathViewModel.locationPathList.collectAsState()
-    val locationPathListErrorMessage by pathViewModel.locationPathListErrorMessage.collectAsState()
+    val locationPathList by pathViewModel.locationPathList.collectAsStateWithLifecycle()
+    val locationPathListErrorMessage by pathViewModel.locationPathListErrorMessage.collectAsStateWithLifecycle()
 
-    val locationTimeDistance by pathViewModel.locationTimeDistance.collectAsState()
-    val locationTimeErrorMessage by pathViewModel.locationTimeErrorMessage.collectAsState()
+    val locationTimeDistance by pathViewModel.locationTimeDistance.collectAsStateWithLifecycle()
+    val locationTimeErrorMessage by pathViewModel.locationTimeErrorMessage.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         pathViewModel.fetchLocationTimeDistance(origin = origin, destination = destination)

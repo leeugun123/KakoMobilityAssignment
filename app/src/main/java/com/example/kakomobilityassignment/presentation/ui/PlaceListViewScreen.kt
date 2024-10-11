@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.kakomobilityassignment.R
 import com.example.kakomobilityassignment.data.Location
 import com.example.kakomobilityassignment.presentation.ScreenScaffoldTemplate
@@ -36,8 +37,8 @@ fun PlaceListViewScreen(
     locationListViewModel: LocationListViewModel,
     navigationToPathView: (origin: String, destination: String) -> Unit
 ) {
-    val locationList by locationListViewModel.locationList.collectAsState()
-    val errorMessage by locationListViewModel.errorMessage.collectAsState()
+    val locationList by locationListViewModel.locationList.collectAsStateWithLifecycle()
+    val errorMessage by locationListViewModel.errorMessage.collectAsStateWithLifecycle()
 
     ScreenScaffoldTemplate(screenContent = {
         if (errorMessage != null) {
