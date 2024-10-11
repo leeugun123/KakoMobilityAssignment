@@ -14,6 +14,16 @@ data class LocationListResponse(
     val locationList : List<Location>
 )
 
+data class LocationPath(
+    @SerializedName("points")
+    val points : String,
+    @SerializedName("traffic_state")
+    val trafficState : String
+)
+
+data class LocationPathsResponse(
+    val locationPathList : List<LocationPath>
+)
 
 data class LocationTimeDistanceResponse(
     @SerializedName("distance")
@@ -21,6 +31,9 @@ data class LocationTimeDistanceResponse(
     @SerializedName("time")
     val time : Int
 )
+
+
+
 
 
 

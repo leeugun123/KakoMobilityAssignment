@@ -28,8 +28,8 @@ import com.example.kakomobilityassignment.R
 import com.example.kakomobilityassignment.data.Location
 import com.example.kakomobilityassignment.presentation.ScreenScaffoldTemplate
 import com.example.kakomobilityassignment.presentation.viewModel.LocationListViewModel
-import com.example.kakomobilityassignment.ui.theme.arrivePlaceColor
-import com.example.kakomobilityassignment.ui.theme.departPlaceColor
+import com.example.kakomobilityassignment.ui.theme.ArrivePlaceColor
+import com.example.kakomobilityassignment.ui.theme.DepartPlaceColor
 
 @Composable
 fun PlaceListViewScreen(
@@ -98,12 +98,12 @@ fun PlaceComponents(
             RowPlaceContent(
                 locationGuideText = stringResource(id = R.string.depart_text),
                 locationInfo.origin,
-                departPlaceColor
+                DepartPlaceColor
             )
             RowPlaceContent(
                 locationGuideText = stringResource(id = R.string.arrive_text),
                 locationInfo.destination,
-                arrivePlaceColor
+                ArrivePlaceColor
             )
         }
     }

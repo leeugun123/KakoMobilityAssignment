@@ -14,7 +14,7 @@ val DepartPlaceColor = Color(0xFF2196F3)
 val ArrivePlaceColor = Color(0xFF4CAF50)
 
 val RouteUnknown = Color(0xE67F7E79)
-val RouteBlock = Color(0xFFFD382A) // Alpha 값을 포함하여 8자리로 표현하는 게 일반적입니다.
+val RouteBlock = Color(0xFFFD382A)
 val RouteJam = Color(0xFFFD382A)
 val RouteDelay = Color(0xFFF7AB17)
 val RouteSlow = Color(0xFFF0D300)
