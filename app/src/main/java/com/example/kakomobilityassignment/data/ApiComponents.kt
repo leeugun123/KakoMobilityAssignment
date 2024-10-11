@@ -9,9 +9,17 @@ data class Location(
     val destination : String
 )
 
-data class LocationResponse(
+data class LocationListResponse(
     @SerializedName("locations")
     val locationList : List<Location>
+)
+
+
+data class LocationTimeDistanceResponse(
+    @SerializedName("distance")
+    val distance : Int,
+    @SerializedName("time")
+    val time : Int
 )
 
 

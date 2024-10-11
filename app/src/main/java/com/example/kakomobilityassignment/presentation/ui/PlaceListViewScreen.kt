@@ -93,19 +93,19 @@ fun PlaceComponents(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp),
+            .height(100.dp)
+            .clickable {
+                onLocationClick.invoke(
+                    locationInfo.origin,
+                    locationInfo.destination
+                )
+            },
         contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp, vertical = 20.dp)
-                .clickable {
-                    onLocationClick.invoke(
-                        locationInfo.origin,
-                        locationInfo.destination
-                    )
-                },
+                .padding(horizontal = 20.dp, vertical = 20.dp),
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             RowPlaceContent(
