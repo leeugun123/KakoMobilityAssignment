@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -27,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kakomobilityassignment.R
 import com.example.kakomobilityassignment.data.Location
+import com.example.kakomobilityassignment.presentation.ScreenScaffoldTemplate
 import com.example.kakomobilityassignment.presentation.viewModel.LocationListViewModel
 import com.example.kakomobilityassignment.ui.theme.arrivePlaceColor
 import com.example.kakomobilityassignment.ui.theme.departPlaceColor
@@ -39,33 +39,20 @@ fun PlaceListViewScreen(
     val locationList by locationListViewModel.locationList.collectAsState()
     val errorMessage by locationListViewModel.errorMessage.collectAsState()
 
-    Scaffold(
-        content = { padding ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-                    .background(Color.White),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                TitleBar()
+    ScreenScaffoldTemplate(screenContent = {
+        if (errorMessage != null) {
+            Text(text = "Error: $errorMessage", modifier = Modifier.padding(16.dp))
+        }
 
-                if (errorMessage != null) {
-                    Text(text = "Error: $errorMessage", modifier = Modifier.padding(16.dp))
-                }
-
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(locationList) { locationInfo ->
-                        PlaceComponents(
-                            locationInfo = locationInfo,
-                            onLocationClick = navigationToPathView
-                        )
-                    }
-                }
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(locationList) { locationInfo ->
+                PlaceComponents(
+                    locationInfo = locationInfo,
+                    onLocationClick = navigationToPathView
+                )
             }
         }
-    )
+    })
 }
 
 @Composable

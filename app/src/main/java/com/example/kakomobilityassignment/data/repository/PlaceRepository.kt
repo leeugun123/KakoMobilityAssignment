@@ -59,7 +59,7 @@ class PlaceRepository {
                 ) {
                     if (response.isSuccessful) {
                         val locationTimeDistanceResponse =
-                            response.body() ?: LocationTimeDistanceResponse(300, 200)
+                            response.body() ?: LocationTimeDistanceResponse(0, 0)
                         onSuccess(
                             LocationTimeDistanceResponse(
                                 locationTimeDistanceResponse.time,
