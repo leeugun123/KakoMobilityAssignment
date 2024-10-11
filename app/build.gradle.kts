@@ -27,6 +27,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "MOBILITY_API_HEADER_KEY", properties.getProperty("MOBILITY_API_HEADER_KEY"))
+        buildConfigField("String", "KAKAO_MAP_NATIVE_API_KEY", properties.getProperty("KAKAO_MAP_NATIVE_API_KEY"))
+        manifestPlaceholders["KAKAO_MAP_NATIVE_API_KEY"] = "KAKAO_MAP_NATIVE_API_KEY"
 
         vectorDrawables {
             useSupportLibrary = true
@@ -87,4 +89,7 @@ dependencies {
     //API 통신 라이브러리 Retrofit
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
+
+    //카카오 맵
+    implementation(libs.kakao.maps)
 }

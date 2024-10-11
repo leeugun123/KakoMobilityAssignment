@@ -10,6 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import com.example.kakomobilityassignment.presentation.viewModel.LocationListViewModel
 import com.example.kakomobilityassignment.ui.theme.KakoMobilityAssignmentTheme
+import com.kakao.vectormap.KakaoMapSdk
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +25,7 @@ class MainActivity : ComponentActivity() {
                 NavigationViewController(locationListViewModel = locationListViewModel)
             }
         }
+        KakaoMapSdk.init(this@MainActivity, BuildConfig.KAKAO_MAP_NATIVE_API_KEY)
     }
 }
 
