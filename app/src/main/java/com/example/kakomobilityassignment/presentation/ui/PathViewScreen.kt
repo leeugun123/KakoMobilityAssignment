@@ -60,7 +60,7 @@ fun TimeDistanceBox() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(end = 20.dp, bottom = 20.dp),
+            .padding(end = 20.dp, bottom = 30.dp),
         contentAlignment = Alignment.BottomEnd
     ) {
         Column(
