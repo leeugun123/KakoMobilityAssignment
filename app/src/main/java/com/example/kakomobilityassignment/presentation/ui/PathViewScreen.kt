@@ -66,12 +66,12 @@ fun TimeDistanceBox() {
         Column(
             modifier = Modifier
                 .size(150.dp, 100.dp)
-                .background(TimeDistanceBoxColor, shape = RoundedCornerShape(20.dp))
+                .background(TimeDistanceBoxColor, shape = RoundedCornerShape(10.dp))
                 .padding(start = 20.dp),
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "시간 : 1시간 30분", color = Color.White)
-            Text(text = "거리 : 3000m", color = Color.White)
+            Text(text = "시간 : 1시간 30분", color = Color.Yellow)
+            Text(text = "거리 : 3000m", color = Color.Yellow)
         }
     }
 }
