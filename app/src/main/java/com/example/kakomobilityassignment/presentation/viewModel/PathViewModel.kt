@@ -25,7 +25,7 @@ class PathViewModel : ViewModel() {
     private val _locationTimeErrorMessage = MutableStateFlow<String?>(null)
     val locationTimeErrorMessage: StateFlow<String?> get() = _locationTimeErrorMessage
 
-    fun fetchLocationPath(origin: String, destination: String) {
+    fun fetchLocationPathList(origin: String, destination: String) {
         viewModelScope.launch {
             repository.getLocationPath(
                 requestedOrigin = origin,

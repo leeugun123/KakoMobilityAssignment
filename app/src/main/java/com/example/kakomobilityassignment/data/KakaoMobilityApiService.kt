@@ -7,7 +7,6 @@ import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface KakaoMobilityApiService {
-
     @GET("coding-assignment/locations")
     fun getLocationsNameList(
         @Header("Authorization") authorizationKey: String = BuildConfig.MOBILITY_API_HEADER_KEY
@@ -18,7 +17,7 @@ interface KakaoMobilityApiService {
         @Header("Authorization") authorizationKey: String = BuildConfig.MOBILITY_API_HEADER_KEY,
         @Query("origin") origin : String,
         @Query("destination") destination : String,
-    ) : Call<LocationPathsResponse>
+    ) : Call<List<LocationPath>>
 
     @GET("coding-assignment/distance-time")
     fun getLocationTimeDistance(

@@ -5,7 +5,6 @@ import com.example.kakomobilityassignment.data.KakaoMobilityApiService
 import com.example.kakomobilityassignment.data.Location
 import com.example.kakomobilityassignment.data.LocationListResponse
 import com.example.kakomobilityassignment.data.LocationPath
-import com.example.kakomobilityassignment.data.LocationPathsResponse
 import com.example.kakomobilityassignment.data.LocationTimeDistanceResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -53,19 +52,19 @@ class KakaoMobilityRepository {
             origin = requestedOrigin,
             destination = requestedDestination
         )
-            .enqueue(object : Callback<LocationPathsResponse> {
+            .enqueue(object : Callback<List<LocationPath>> {
                 override fun onResponse(
-                    call: Call<LocationPathsResponse>,
-                    response: Response<LocationPathsResponse>
+                    call: Call<List<LocationPath>>,
+                    response: Response<List<LocationPath>>
                 ) {
                     if (response.isSuccessful) {
-                        onSuccess(response.body()?.locationPathList ?: emptyList())
+                        onSuccess(response.body() ?: emptyList())
                     } else {
                         onError(Exception("Failed to load places"))
                     }
                 }
 
-                override fun onFailure(call: Call<LocationPathsResponse>, t: Throwable) {
+                override fun onFailure(call: Call<List<LocationPath>>, t: Throwable) {
                     Log.e("TAG", t.toString())
                     onError(t)
                 }

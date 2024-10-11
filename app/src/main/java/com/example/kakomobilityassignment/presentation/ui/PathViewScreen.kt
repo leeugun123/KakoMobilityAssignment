@@ -1,12 +1,10 @@
 package com.example.kakomobilityassignment.presentation.ui
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -22,7 +20,6 @@ fun PathViewScreen(
     origin: String,
     destination: String
 ) {
-
     val locationPathList by pathViewModel.locationPathList.collectAsState()
     val locationPathListErrorMessage by pathViewModel.locationPathListErrorMessage.collectAsState()
 
@@ -31,7 +28,7 @@ fun PathViewScreen(
 
     LaunchedEffect(Unit) {
         pathViewModel.fetchLocationTimeDistance(origin = origin, destination = destination)
-        pathViewModel.fetchLocationPath(origin = origin, destination = destination)
+        pathViewModel.fetchLocationPathList(origin = origin, destination = destination)
     }
 
     ScreenScaffoldTemplate(screenContent = {
@@ -40,12 +37,14 @@ fun PathViewScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = locationTimeDistance.time.toString() + " " + locationTimeDistance.distance.toString())
+            //  Text(text = locationTimeDistance.time.toString() + " " + locationTimeDistance.distance.toString())
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(locationPathList) { locationPath ->
-                    Log.e("TAG",locationPath.points)
-                    Log.e("TAG",locationPath.trafficState)
+                    /*
+                        Log.e("TAG",locationPath.points)
+                        Log.e("TAG",locationPath.trafficState)
+                     */
                 }
             }
 

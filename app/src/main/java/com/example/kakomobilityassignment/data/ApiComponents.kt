@@ -21,10 +21,6 @@ data class LocationPath(
     val trafficState : String
 )
 
-data class LocationPathsResponse(
-    val locationPathList : List<LocationPath>
-)
-
 data class LocationTimeDistanceResponse(
     @SerializedName("distance")
     val distance : Int,
