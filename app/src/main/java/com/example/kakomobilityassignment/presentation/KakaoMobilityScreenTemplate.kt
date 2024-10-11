@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import com.example.kakomobilityassignment.presentation.ui.TitleBar
 
 @Composable
-fun ScreenScaffoldTemplate(screenContent: @Composable () -> Unit) {
+fun KakaoMobilityScreenTemplate(screenContent: @Composable () -> Unit) {
     Scaffold(
         content = { padding ->
             Column(

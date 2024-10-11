@@ -7,12 +7,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.kakomobilityassignment.presentation.ScreenScaffoldTemplate
+import com.example.kakomobilityassignment.presentation.KakaoMobilityScreenTemplate
 import com.example.kakomobilityassignment.presentation.viewModel.PathViewModel
 
 @Composable
@@ -32,7 +31,7 @@ fun PathViewScreen(
         pathViewModel.fetchLocationPathList(origin = origin, destination = destination)
     }
 
-    ScreenScaffoldTemplate(screenContent = {
+    KakaoMobilityScreenTemplate(screenContent = {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,

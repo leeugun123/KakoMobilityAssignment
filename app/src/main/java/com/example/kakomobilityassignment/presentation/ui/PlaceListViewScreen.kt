@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.kakomobilityassignment.R
 import com.example.kakomobilityassignment.data.Location
-import com.example.kakomobilityassignment.presentation.ScreenScaffoldTemplate
+import com.example.kakomobilityassignment.presentation.KakaoMobilityScreenTemplate
 import com.example.kakomobilityassignment.presentation.viewModel.LocationListViewModel
 import com.example.kakomobilityassignment.ui.theme.ArrivePlaceColor
 import com.example.kakomobilityassignment.ui.theme.DepartPlaceColor
@@ -40,7 +39,7 @@ fun PlaceListViewScreen(
     val locationList by locationListViewModel.locationList.collectAsStateWithLifecycle()
     val errorMessage by locationListViewModel.errorMessage.collectAsStateWithLifecycle()
 
-    ScreenScaffoldTemplate(screenContent = {
+    KakaoMobilityScreenTemplate(screenContent = {
         if (errorMessage != null) {
             Text(text = "Error: $errorMessage", modifier = Modifier.padding(16.dp))
         }
