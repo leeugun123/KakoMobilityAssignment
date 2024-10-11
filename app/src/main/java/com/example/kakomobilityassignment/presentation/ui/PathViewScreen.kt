@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -64,12 +66,12 @@ fun TimeDistanceBox() {
         Column(
             modifier = Modifier
                 .size(150.dp, 100.dp)
-                .background(TimeDistanceBoxColor),
-            horizontalAlignment = Alignment.CenterHorizontally,
+                .background(TimeDistanceBoxColor, shape = RoundedCornerShape(20.dp))
+                .padding(start = 20.dp),
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "시간 : 30분", textAlign = TextAlign.Start)
-            Text(text = "거리 : 3000m",textAlign = TextAlign.Start)
+            Text(text = "시간 : 1시간 30분", color = Color.White)
+            Text(text = "거리 : 3000m", color = Color.White)
         }
     }
 }
@@ -89,7 +91,7 @@ fun KakaoMapScreen() {
                 }
             }, object : KakaoMapReadyCallback() {
                 override fun onMapReady(map: KakaoMap) {
-                    Log.e("TAG", "onMapReady: ")
+
                 }
             })
             mapView
