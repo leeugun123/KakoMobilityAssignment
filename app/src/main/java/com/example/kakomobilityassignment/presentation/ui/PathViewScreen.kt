@@ -1,18 +1,30 @@
 package com.example.kakomobilityassignment.presentation.ui
 
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.kakomobilityassignment.presentation.KakaoMobilityScreenTemplate
 import com.example.kakomobilityassignment.presentation.viewModel.PathViewModel
+import com.example.kakomobilityassignment.ui.theme.TimeDistanceBoxColor
+import com.kakao.vectormap.KakaoMap
+import com.kakao.vectormap.KakaoMapReadyCallback
+import com.kakao.vectormap.MapLifeCycleCallback
+import com.kakao.vectormap.MapView
 
 @Composable
 fun PathViewScreen(
@@ -32,22 +44,56 @@ fun PathViewScreen(
     }
 
     KakaoMobilityScreenTemplate(screenContent = {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            //  Text(text = locationTimeDistance.time.toString() + " " + locationTimeDistance.distance.toString())
-
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(locationPathList) { locationPath ->
-                    /*
-                        Log.e("TAG",locationPath.points)
-                        Log.e("TAG",locationPath.trafficState)
-                     */
-                }
-            }
-
+            KakaoMapScreen()
+            TimeDistanceBox()
         }
     })
+}
+
+@Composable
+fun TimeDistanceBox() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(end = 20.dp, bottom = 20.dp),
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        Column(
+            modifier = Modifier
+                .size(150.dp, 100.dp)
+                .background(TimeDistanceBoxColor),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(text = "시간 : 30분", textAlign = TextAlign.Start)
+            Text(text = "거리 : 3000m",textAlign = TextAlign.Start)
+        }
+    }
+}
+
+@Composable
+fun KakaoMapScreen() {
+    AndroidView(
+        factory = { context ->
+            val mapView = MapView(context)
+            mapView.start(object : MapLifeCycleCallback() {
+                override fun onMapDestroy() {
+                    Log.e("TAG", "onMapDestroy: ")
+                }
+
+                override fun onMapError(error: Exception) {
+                    Log.e("TAG", "onMapError: ", error)
+                }
+            }, object : KakaoMapReadyCallback() {
+                override fun onMapReady(map: KakaoMap) {
+                    Log.e("TAG", "onMapReady: ")
+                }
+            })
+            mapView
+        },
+        modifier = Modifier.fillMaxSize()
+    )
 }
