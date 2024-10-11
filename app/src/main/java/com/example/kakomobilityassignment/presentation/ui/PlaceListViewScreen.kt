@@ -56,23 +56,6 @@ fun PlaceListViewScreen(
 }
 
 @Composable
-fun TitleBar() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-            .background(color = Color.Black),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = stringResource(id = R.string.title_bar_content),
-            color = Color.Yellow,
-            fontSize = 20.sp
-        )
-    }
-}
-
-@Composable
 fun PlaceComponents(
     locationInfo: Location,
     onLocationClick: (origin: String, destination: String) -> Unit
