@@ -1,6 +1,5 @@
 package com.example.kakomobilityassignment.presentation.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,7 +45,7 @@ fun PlaceListViewScreen(
 
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(locationList) { locationInfo ->
-                PlaceComponents(
+                LocationNameComponent(
                     locationInfo = locationInfo,
                     onLocationClick = navigationToPathView
                 )
@@ -56,7 +55,7 @@ fun PlaceListViewScreen(
 }
 
 @Composable
-fun PlaceComponents(
+fun LocationNameComponent(
     locationInfo: Location,
     onLocationClick: (origin: String, destination: String) -> Unit
 ) {
