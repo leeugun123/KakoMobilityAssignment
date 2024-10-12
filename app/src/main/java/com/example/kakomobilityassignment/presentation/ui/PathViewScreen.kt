@@ -159,6 +159,14 @@ private fun KakaoMapScreen(
                         val slowRoutePoints = mutableListOf<LatLng>()
                         val normalRoutePoints = mutableListOf<LatLng>()
 
+                        val unknownStyle = RouteLineStyle.from(context, R.style.RouteUnknownLineStyle)
+                        val blockStyle = RouteLineStyle.from(context, R.style.RouteBlockLineStyle)
+                        val jamStyle = RouteLineStyle.from(context, R.style.RouteJamLineStyle)
+                        val delayStyle = RouteLineStyle.from(context, R.style.RouteDelayLineStyle)
+                        val slowStyle = RouteLineStyle.from(context, R.style.RouteSlowLineStyle)
+                        val normalStyle = RouteLineStyle.from(context, R.style.RouteNormalLineStyle)
+
+
                         assignLatLngList.forEachIndexed { idx, assignLatLng ->
 
                             val trafficState = trafficStateList[idx]
@@ -232,15 +240,6 @@ private fun KakaoMapScreen(
                                 }
                             }
                         }
-
-                        val unknownStyle =
-                            RouteLineStyle.from(context, R.style.RouteUnknownLineStyle)
-                        val blockStyle = RouteLineStyle.from(context, R.style.RouteBlockLineStyle)
-                        val jamStyle = RouteLineStyle.from(context, R.style.RouteJamLineStyle)
-                        val delayStyle = RouteLineStyle.from(context, R.style.RouteDelayLineStyle)
-                        val slowStyle = RouteLineStyle.from(context, R.style.RouteSlowLineStyle)
-                        val normalStyle = RouteLineStyle.from(context, R.style.RouteNormalLineStyle)
-
                         val unknownSegment = RouteLineSegment.from(unknownRoutePoints, unknownStyle)
                         val blockSegment = RouteLineSegment.from(blockRoutePoints, blockStyle)
                         val jamSegment = RouteLineSegment.from(jamRoutePoints, jamStyle)
