@@ -91,8 +91,8 @@ class KakaoMobilityRepository {
                             response.body() ?: LocationTimeDistanceResponse(0, 0)
                         onSuccess(
                             LocationTimeDistanceResponse(
-                                locationTimeDistanceResponse.time,
-                                locationTimeDistanceResponse.distance
+                                distance = locationTimeDistanceResponse.distance,
+                                time = locationTimeDistanceResponse.time
                             )
                         )
                     } else {

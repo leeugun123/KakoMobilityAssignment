@@ -16,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -29,14 +28,9 @@ import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
-import com.kakao.vectormap.route.RouteLineLayer
 import com.kakao.vectormap.route.RouteLineOptions
 import com.kakao.vectormap.route.RouteLineSegment
 import com.kakao.vectormap.route.RouteLineStyle
-import com.kakao.vectormap.route.RouteLineStyles
-import com.kakao.vectormap.route.RouteLineStylesSet
-
-
 
 
 @Composable
@@ -60,19 +54,24 @@ fun PathViewScreen(
         Log.e("TAG", e.points)
         Log.e("TAG", e.trafficState)
     }
+    //파싱하여 전달
+
 
     KakaoMobilityScreenTemplate(screenContent = {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
             KakaoMapScreen()
-            TimeDistanceBox()
+            TimeDistanceBox(
+                time = convertSecondsToTimeString(locationTimeDistance.time),
+                distance = formatNumberWithCommasAndMinute(locationTimeDistance.distance)
+            )
         }
     })
 }
 
 @Composable
-fun TimeDistanceBox() {
+fun TimeDistanceBox(time: String, distance: String) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -86,8 +85,8 @@ fun TimeDistanceBox() {
                 .padding(start = 20.dp),
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "시간 : 1시간 30분", color = Color.Yellow)
-            Text(text = "거리 : 3000m", color = Color.Yellow)
+            Text(text = "시간 : $time", color = Color.Yellow)
+            Text(text = "거리 : $distance", color = Color.Yellow)
         }
     }
 }
@@ -139,3 +138,19 @@ fun KakaoMapScreen() {
         modifier = Modifier.fillMaxSize()
     )
 }
+
+private fun convertSecondsToTimeString(seconds: Int): String {
+    val hours = seconds / 3600
+    val remainingSecondsAfterHours = seconds % 3600
+    val minutes = remainingSecondsAfterHours / 60
+    val remainingSeconds = remainingSecondsAfterHours % 60
+
+    return buildString {
+        if (hours > 0) append("${hours}시간 ")
+        if (minutes > 0) append("${minutes}분 ")
+        if (remainingSeconds > 0 || isEmpty()) append("${remainingSeconds}초")
+    }.trim()
+}
+
+private fun formatNumberWithCommasAndMinute(number: Int) =
+    "%,d".format(number) + "m"
