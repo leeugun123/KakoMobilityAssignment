@@ -1,5 +1,6 @@
 package com.example.kakomobilityassignment.presentation.ui
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.kakomobilityassignment.AssignLatLng
 import com.example.kakomobilityassignment.presentation.KakaoMobilityScreenTemplate
+import com.example.kakomobilityassignment.presentation.common.LoadDataFailScreen
 import com.example.kakomobilityassignment.presentation.common.LoadingScreen
 import com.example.kakomobilityassignment.presentation.viewModel.PathViewModel
 import com.example.kakomobilityassignment.ui.theme.TimeDistanceBoxColor
@@ -52,12 +54,13 @@ fun PathViewScreen(
     val locationPathListErrorMessage by pathViewModel.locationPathListErrorMessage.collectAsStateWithLifecycle()
 
     val locationTimeDistance by pathViewModel.locationTimeDistance.collectAsStateWithLifecycle()
-    val locationTimeErrorMessage by pathViewModel.locationTimeErrorMessage.collectAsStateWithLifecycle()
+    val locationTimeDistanceErrorMessage by pathViewModel.locationTimeErrorMessage.collectAsStateWithLifecycle()
 
     val trafficStateList: MutableList<String> = remember { mutableListOf() }
     val assignLatLngList: MutableList<MutableList<AssignLatLng>> = remember { mutableListOf() }
 
     var isDataLoaded by remember { mutableStateOf(false) }
+    var isFailLoadData by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
 
@@ -65,6 +68,11 @@ fun PathViewScreen(
         pathViewModel.fetchLocationPathList(origin = origin, destination = destination)
 
         delay(1000L)
+
+        if(locationPathList.isEmpty()){
+            isFailLoadData = true
+            return@LaunchedEffect
+        }
 
         locationPathList.forEach { locationPath ->
 
@@ -84,6 +92,7 @@ fun PathViewScreen(
             assignLatLngList.add(tempList)
             trafficStateList.add(locationPath.trafficState)
         }
+
         isDataLoaded = true
     }
 
@@ -101,7 +110,10 @@ fun PathViewScreen(
                     distance = formatNumberWithCommasAndMinute(locationTimeDistance.distance)
                 )
             }
-        }else
+        }
+        else if(isFailLoadData)
+            LoadDataFailScreen()
+        else
             LoadingScreen()
     })
 }

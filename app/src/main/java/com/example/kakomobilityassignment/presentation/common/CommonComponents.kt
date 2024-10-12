@@ -35,6 +35,16 @@ fun TitleBar() {
 }
 
 @Composable
+fun LoadDataFailScreen(){
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "데이터 로드 실패")
+    }
+}
+
+@Composable
 fun LoadingScreen() {
     Box(
         modifier = Modifier
