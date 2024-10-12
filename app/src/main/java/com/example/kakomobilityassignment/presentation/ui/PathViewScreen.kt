@@ -16,17 +16,28 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.kakomobilityassignment.R
 import com.example.kakomobilityassignment.presentation.KakaoMobilityScreenTemplate
 import com.example.kakomobilityassignment.presentation.viewModel.PathViewModel
 import com.example.kakomobilityassignment.ui.theme.TimeDistanceBoxColor
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
+import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
+import com.kakao.vectormap.route.RouteLineLayer
+import com.kakao.vectormap.route.RouteLineOptions
+import com.kakao.vectormap.route.RouteLineSegment
+import com.kakao.vectormap.route.RouteLineStyle
+import com.kakao.vectormap.route.RouteLineStyles
+import com.kakao.vectormap.route.RouteLineStylesSet
+
+
+
 
 @Composable
 fun PathViewScreen(
@@ -43,6 +54,11 @@ fun PathViewScreen(
     LaunchedEffect(Unit) {
         pathViewModel.fetchLocationTimeDistance(origin = origin, destination = destination)
         pathViewModel.fetchLocationPathList(origin = origin, destination = destination)
+    }
+
+    locationPathList.forEach { e ->
+        Log.e("TAG", e.points)
+        Log.e("TAG", e.trafficState)
     }
 
     KakaoMobilityScreenTemplate(screenContent = {
@@ -81,19 +97,43 @@ fun KakaoMapScreen() {
     AndroidView(
         factory = { context ->
             val mapView = MapView(context)
-            mapView.start(object : MapLifeCycleCallback() {
-                override fun onMapDestroy() {
-                    Log.e("TAG", "onMapDestroy: ")
-                }
 
-                override fun onMapError(error: Exception) {
-                    Log.e("TAG", "onMapError: ", error)
-                }
-            }, object : KakaoMapReadyCallback() {
-                override fun onMapReady(map: KakaoMap) {
+            mapView.start(
+                object : MapLifeCycleCallback() {
+                    override fun onMapDestroy() {
+                        Log.e("TAG", "onMapDestroy: ")
+                    }
 
-                }
-            })
+                    override fun onMapError(error: Exception) {
+                        Log.e("TAG", "onMapError: ", error)
+                    }
+                },
+                object : KakaoMapReadyCallback() {
+                    override fun onMapReady(map: KakaoMap) {
+
+                        val routePoints = listOf(
+                            LatLng.from(37.402005, 127.108621),
+                            LatLng.from(37.403000, 127.109000),
+                        )
+
+                        val style = RouteLineStyle.from(context, R.style.SimpleRouteLineStyle)
+
+                        val routeLineSegment = RouteLineSegment.from(routePoints, style)
+
+                        val routeLineOptions = RouteLineOptions.from(listOf(routeLineSegment))
+
+                        map.routeLineManager!!.layer.addRouteLine(routeLineOptions)
+                    }
+
+                    override fun getPosition(): LatLng {
+                        return LatLng.from(39.406960, 127.115587)
+                    } // 시작할때 좌표 설정
+
+                    override fun getZoomLevel(): Int {
+                        return 10;
+                    }
+                },
+            )
             mapView
         },
         modifier = Modifier.fillMaxSize()
