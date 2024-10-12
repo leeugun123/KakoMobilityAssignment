@@ -60,10 +60,9 @@ fun PathViewScreen(
         pathViewModel.fetchLocationTimeDistance(origin = origin, destination = destination)
         pathViewModel.fetchLocationPathList(origin = origin, destination = destination)
 
-        delay(3000L)
+        delay(1000L)
 
         locationPathList.forEach { locationPath ->
-
 
             locationPath.points.split(" ")
                 .map { pair ->
@@ -99,6 +98,10 @@ fun PathViewScreen(
                 )
             }
         })
+    } else {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text(text = "로딩중")
+        }
     }
 
 }

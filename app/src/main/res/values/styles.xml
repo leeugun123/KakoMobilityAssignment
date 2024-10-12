@@ -1,9 +1,9 @@
 <resources>
 
     <style name="SimpleRouteLineStyle" parent="RouteLineStyle">
-        <item name="mapLineWidth">20.0</item>
+        <item name="mapLineWidth">10.0</item>
         <item name="mapLineColor">#E91E63</item>
-        <item name="mapStrokeWidth">10</item>
+        <item name="mapStrokeWidth">2</item>
         <item name="mapStrokeColor">#ffffff</item>
     </style>
 
