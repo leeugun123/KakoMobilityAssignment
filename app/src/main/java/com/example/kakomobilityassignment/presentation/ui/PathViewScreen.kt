@@ -28,6 +28,7 @@ import com.example.kakomobilityassignment.ui.theme.TimeDistanceBoxColor
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
+import com.kakao.vectormap.LatLngBounds
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
 import com.kakao.vectormap.camera.CameraUpdateFactory
@@ -147,38 +148,28 @@ private fun KakaoMapScreen(
                 },
                 object : KakaoMapReadyCallback() {
 
-                    override fun getPosition(): LatLng {
-
-                        val initCameraLatLng = AssignLatLng(
-                            latitude = assignLatLngList[assignLatLngList.size / 2].firstOrNull()?.latitude
-                                ?: 0.0,
-                            longitude = assignLatLngList[assignLatLngList.size / 2].firstOrNull()?.longitude
-                                ?: 0.0
-                        )
-
-                        return LatLng.from(initCameraLatLng.latitude, initCameraLatLng.longitude)
-                    }
-
-                    override fun getZoomLevel(): Int {
-                        return 10;
-                    }
-
                     override fun onMapReady(map: KakaoMap) {
 
-                        /* 마커 표시 */
+                        /* 출발, 도착 좌표 지정 */
                         val departMarkerLatLng = AssignLatLng(
-                            latitude = assignLatLngList.firstOrNull()?.firstOrNull()?.latitude
-                                ?: 0.0,
-                            longitude = assignLatLngList.firstOrNull()?.firstOrNull()?.longitude
-                                ?: 0.0
+                            latitude = assignLatLngList.firstOrNull()?.firstOrNull()?.latitude ?: 0.0,
+                            longitude = assignLatLngList.firstOrNull()?.firstOrNull()?.longitude ?: 0.0
                         )
 
                         val arriveMarkerLatLng = AssignLatLng(
                             latitude = assignLatLngList.lastOrNull()?.lastOrNull()?.latitude ?: 0.0,
-                            longitude = assignLatLngList.lastOrNull()?.lastOrNull()?.longitude
-                                ?: 0.0
+                            longitude = assignLatLngList.lastOrNull()?.lastOrNull()?.longitude ?: 0.0
                         )
 
+                        /* 카메라 경로 범위 이동 설정 */
+                        val bounds = LatLngBounds(
+                            LatLng.from(departMarkerLatLng.latitude, departMarkerLatLng.longitude),
+                            LatLng.from(arriveMarkerLatLng.latitude, arriveMarkerLatLng.longitude)
+                        )
+                        val cameraUpdate = CameraUpdateFactory.fitMapPoints(bounds, 200)
+                        map.moveCamera(cameraUpdate)
+
+                        /* 출발 , 도착 마커 카카오 맵 표기 */
                         val departMarkerStyles: LabelStyles? = map.labelManager
                             ?.addLabelStyles(LabelStyles.from(LabelStyle.from(com.example.kakomobilityassignment.R.drawable.depart_img)))
 
@@ -191,8 +182,7 @@ private fun KakaoMapScreen(
                                     departMarkerLatLng.latitude,
                                     departMarkerLatLng.longitude
                                 )
-                            )
-                                .setStyles(departMarkerStyles)
+                            ).setStyles(departMarkerStyles)
 
                         val arriveOptions =
                             LabelOptions.from(
@@ -200,14 +190,12 @@ private fun KakaoMapScreen(
                                     arriveMarkerLatLng.latitude,
                                     arriveMarkerLatLng.longitude
                                 )
-                            )
-                                .setStyles(arriveMarkerStyles)
+                            ).setStyles(arriveMarkerStyles)
 
                         map.labelManager?.layer?.addLabel(departOptions)
                         map.labelManager?.layer?.addLabel(arriveOptions)
 
                         /* 도로 색상 표시 */
-
                         val segmentList: List<RouteLineSegment> =
                             assignLatLngList.mapIndexed { idx, assignLatLng ->
 
