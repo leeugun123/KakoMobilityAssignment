@@ -51,12 +51,12 @@ fun PathViewScreen(
     val locationTimeErrorMessage by pathViewModel.locationTimeErrorMessage.collectAsStateWithLifecycle()
 
     val trafficStateList: MutableList<String> = remember { mutableListOf() }
-    val assignLatLngList: MutableList<AssignLatLng> = remember { mutableListOf() }
+    val assignLatLngList: MutableList<MutableList<AssignLatLng>> = remember { mutableListOf() }
 
     var isDataLoaded by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        // 데이터 비동기 로드
+
         pathViewModel.fetchLocationTimeDistance(origin = origin, destination = destination)
         pathViewModel.fetchLocationPathList(origin = origin, destination = destination)
 
@@ -64,20 +64,23 @@ fun PathViewScreen(
 
         locationPathList.forEach { locationPath ->
 
+            val tempList: MutableList<AssignLatLng> = mutableListOf()
+
             locationPath.points.split(" ")
                 .map { pair ->
                     val (latitude, longitude) = pair.split(",")
-                    assignLatLngList.add(
+                    tempList.add(
                         AssignLatLng(
                             latitude = latitude.toDouble(),
                             longitude = longitude.toDouble()
                         )
                     )
                 }
+
+            assignLatLngList.add(tempList)
             trafficStateList.add(locationPath.trafficState)
         }
 
-        // 모든 데이터 로딩 완료 후 플래그 변경
         isDataLoaded = true
     }
 
@@ -129,10 +132,9 @@ fun TimeDistanceBox(time: String, distance: String) {
 
 @Composable
 private fun KakaoMapScreen(
-    assignLatLngList: MutableList<AssignLatLng>,
+    assignLatLngList: MutableList<MutableList<AssignLatLng>>,
     trafficStateList: MutableList<String>
 ) {
-
     AndroidView(
         factory = { context ->
             val mapView = MapView(context)
@@ -153,15 +155,19 @@ private fun KakaoMapScreen(
                         val writeRoutePoints = mutableListOf<LatLng>()
 
                         assignLatLngList.forEach { assignLatLng ->
-                            writeRoutePoints.add(
-                                LatLng.from(
-                                    assignLatLng.longitude,
-                                    assignLatLng.latitude,
+
+                            assignLatLng.forEach { e ->
+                                writeRoutePoints.add(
+                                    LatLng.from(
+                                        e.longitude,
+                                        e.latitude,
+                                    )
                                 )
-                            )
+                            }
                         }
 
                         val style = RouteLineStyle.from(context, R.style.SimpleRouteLineStyle)
+
                         val routeLineSegment = RouteLineSegment.from(writeRoutePoints, style)
                         val routeLineOptions = RouteLineOptions.from(listOf(routeLineSegment))
                         map.routeLineManager!!.layer.addRouteLine(routeLineOptions)
