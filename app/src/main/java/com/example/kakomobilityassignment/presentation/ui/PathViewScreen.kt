@@ -87,12 +87,11 @@ fun PathViewScreen(
         isDataLoaded = true
     }
 
-    if (isDataLoaded) {
-        KakaoMobilityScreenTemplate(screenContent = {
+    KakaoMobilityScreenTemplate(screenContent = {
+        if(isDataLoaded){
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
-
                 KakaoMapScreen(
                     assignLatLngList = assignLatLngList,
                     trafficStateList = trafficStateList
@@ -102,13 +101,9 @@ fun PathViewScreen(
                     distance = formatNumberWithCommasAndMinute(locationTimeDistance.distance)
                 )
             }
-        })
-    } else{
-        KakaoMobilityScreenTemplate {
+        }else
             LoadingScreen()
-        }
-    }
-
+    })
 }
 
 @Composable
