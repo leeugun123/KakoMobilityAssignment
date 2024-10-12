@@ -21,4 +21,4 @@ val RouteSlow = Color(0xFFF0D300)
 val RouteNormal = Color(0xFF3BD72C)
 val StrokeColor = Color(0xFFFFFFFF)
 
-val TimeDistanceBoxColor = Color.Gray
+val TimeDistanceBoxColor = Color.Black
