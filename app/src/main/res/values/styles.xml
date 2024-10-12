@@ -1,44 +1,44 @@
 <resources>
 
     <style name="RouteUnknownLineStyle" parent="RouteLineStyle">
-        <item name="mapLineWidth">10.0</item>
+        <item name="mapLineWidth">15.0</item>
         <item name="mapLineColor">#E67F7E79</item>
-        <item name="mapStrokeWidth">2</item>
+        <item name="mapStrokeWidth">5</item>
         <item name="mapStrokeColor">#FFFFFF</item>
     </style>
 
     <style name="RouteBlockLineStyle" parent="RouteLineStyle">
-        <item name="mapLineWidth">10.0</item>
+        <item name="mapLineWidth">15.0</item>
         <item name="mapLineColor">#FD382A</item>
-        <item name="mapStrokeWidth">2</item>
+        <item name="mapStrokeWidth">5</item>
         <item name="mapStrokeColor">#FFFFFF</item>
     </style>
 
     <style name="RouteJamLineStyle" parent="RouteLineStyle">
-        <item name="mapLineWidth">10.0</item>
+        <item name="mapLineWidth">15.0</item>
         <item name="mapLineColor">#FD382A</item>
-        <item name="mapStrokeWidth">2</item>
+        <item name="mapStrokeWidth">5</item>
         <item name="mapStrokeColor">#FFFFFF</item>
     </style>
 
     <style name="RouteDelayLineStyle" parent="RouteLineStyle">
-        <item name="mapLineWidth">10.0</item>
+        <item name="mapLineWidth">15.0</item>
         <item name="mapLineColor">#F7AB17</item>
-        <item name="mapStrokeWidth">2</item>
+        <item name="mapStrokeWidth">5</item>
         <item name="mapStrokeColor">#FFFFFF</item>
     </style>
 
     <style name="RouteSlowLineStyle" parent="RouteLineStyle">
-        <item name="mapLineWidth">10.0</item>
+        <item name="mapLineWidth">15.0</item>
         <item name="mapLineColor">#F0D300</item>
-        <item name="mapStrokeWidth">2</item>
+        <item name="mapStrokeWidth">5</item>
         <item name="mapStrokeColor">#FFFFFF</item>
     </style>
 
     <style name="RouteNormalLineStyle" parent="RouteLineStyle">
-        <item name="mapLineWidth">10.0</item>
+        <item name="mapLineWidth">15.0</item>
         <item name="mapLineColor">#3BD72C</item>
-        <item name="mapStrokeWidth">2</item>
+        <item name="mapStrokeWidth">5</item>
         <item name="mapStrokeColor">#FFFFFF</item>
     </style>
 
