@@ -13,12 +13,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.kakomobilityassignment.AssignLatLng
 import com.example.kakomobilityassignment.R
 import com.example.kakomobilityassignment.presentation.KakaoMobilityScreenTemplate
 import com.example.kakomobilityassignment.presentation.viewModel.PathViewModel
@@ -31,6 +35,7 @@ import com.kakao.vectormap.MapView
 import com.kakao.vectormap.route.RouteLineOptions
 import com.kakao.vectormap.route.RouteLineSegment
 import com.kakao.vectormap.route.RouteLineStyle
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -45,29 +50,57 @@ fun PathViewScreen(
     val locationTimeDistance by pathViewModel.locationTimeDistance.collectAsStateWithLifecycle()
     val locationTimeErrorMessage by pathViewModel.locationTimeErrorMessage.collectAsStateWithLifecycle()
 
+    val trafficStateList: MutableList<String> = remember { mutableListOf() }
+    val assignLatLngList: MutableList<AssignLatLng> = remember { mutableListOf() }
+
+    var isDataLoaded by remember { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
+        // 데이터 비동기 로드
         pathViewModel.fetchLocationTimeDistance(origin = origin, destination = destination)
         pathViewModel.fetchLocationPathList(origin = origin, destination = destination)
-    }
 
-    locationPathList.forEach { e ->
-        Log.e("TAG", e.points)
-        Log.e("TAG", e.trafficState)
-    }
-    //파싱하여 전달
+        delay(3000L)
+
+        locationPathList.forEach { locationPath ->
 
 
-    KakaoMobilityScreenTemplate(screenContent = {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            KakaoMapScreen()
-            TimeDistanceBox(
-                time = convertSecondsToTimeString(locationTimeDistance.time),
-                distance = formatNumberWithCommasAndMinute(locationTimeDistance.distance)
-            )
+            locationPath.points.split(" ")
+                .map { pair ->
+                    val (latitude, longitude) = pair.split(",")
+                    assignLatLngList.add(
+                        AssignLatLng(
+                            latitude = latitude.toDouble(),
+                            longitude = longitude.toDouble()
+                        )
+                    )
+                }
+            trafficStateList.add(locationPath.trafficState)
         }
-    })
+
+        // 모든 데이터 로딩 완료 후 플래그 변경
+        isDataLoaded = true
+    }
+
+
+    if (isDataLoaded) {
+        KakaoMobilityScreenTemplate(screenContent = {
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+
+                KakaoMapScreen(
+                    assignLatLngList = assignLatLngList,
+                    trafficStateList = trafficStateList
+                )
+                TimeDistanceBox(
+                    time = convertSecondsToTimeString(locationTimeDistance.time),
+                    distance = formatNumberWithCommasAndMinute(locationTimeDistance.distance)
+                )
+            }
+        })
+    }
+
 }
 
 @Composable
@@ -92,7 +125,11 @@ fun TimeDistanceBox(time: String, distance: String) {
 }
 
 @Composable
-fun KakaoMapScreen() {
+private fun KakaoMapScreen(
+    assignLatLngList: MutableList<AssignLatLng>,
+    trafficStateList: MutableList<String>
+) {
+
     AndroidView(
         factory = { context ->
             val mapView = MapView(context)
@@ -110,23 +147,27 @@ fun KakaoMapScreen() {
                 object : KakaoMapReadyCallback() {
                     override fun onMapReady(map: KakaoMap) {
 
-                        val routePoints = listOf(
-                            LatLng.from(37.402005, 127.108621),
-                            LatLng.from(37.403000, 127.109000),
-                        )
+                        val writeRoutePoints = mutableListOf<LatLng>()
+
+                        assignLatLngList.forEach { assignLatLng ->
+                            writeRoutePoints.add(
+                                LatLng.from(
+                                    assignLatLng.longitude,
+                                    assignLatLng.latitude,
+                                )
+                            )
+                        }
 
                         val style = RouteLineStyle.from(context, R.style.SimpleRouteLineStyle)
-
-                        val routeLineSegment = RouteLineSegment.from(routePoints, style)
-
+                        val routeLineSegment = RouteLineSegment.from(writeRoutePoints, style)
                         val routeLineOptions = RouteLineOptions.from(listOf(routeLineSegment))
-
                         map.routeLineManager!!.layer.addRouteLine(routeLineOptions)
                     }
 
-                    override fun getPosition(): LatLng {
-                        return LatLng.from(39.406960, 127.115587)
-                    } // 시작할때 좌표 설정
+                    /*
+                        override fun getPosition(): LatLng {}
+                        // 시작할때 좌표 설정
+                    */
 
                     override fun getZoomLevel(): Int {
                         return 10;
