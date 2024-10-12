@@ -1,6 +1,5 @@
 package com.example.kakomobilityassignment.presentation.ui
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.kakomobilityassignment.AssignLatLng
-import com.example.kakomobilityassignment.R
 import com.example.kakomobilityassignment.presentation.KakaoMobilityScreenTemplate
 import com.example.kakomobilityassignment.presentation.viewModel.PathViewModel
 import com.example.kakomobilityassignment.ui.theme.TimeDistanceBoxColor
@@ -32,6 +30,9 @@ import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
+import com.kakao.vectormap.label.LabelOptions
+import com.kakao.vectormap.label.LabelStyle
+import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.route.RouteLineOptions
 import com.kakao.vectormap.route.RouteLineSegment
 import com.kakao.vectormap.route.RouteLineStyle
@@ -146,24 +147,72 @@ private fun KakaoMapScreen(
                 },
                 object : KakaoMapReadyCallback() {
                     override fun onMapReady(map: KakaoMap) {
-                        val segmentList: List<RouteLineSegment> = assignLatLngList.mapIndexed { idx, assignLatLng ->
 
-                            val style = when (trafficStateList.getOrNull(idx)) {
-                                "UNKNOWN" -> RouteLineStyle.from(context, R.style.RouteUnknownLineStyle)
-                                "JAM" -> RouteLineStyle.from(context, R.style.RouteJamLineStyle)
-                                "DELAY" -> RouteLineStyle.from(context, R.style.RouteDelayLineStyle)
-                                "SLOW" -> RouteLineStyle.from(context, R.style.RouteSlowLineStyle)
-                                "NORMAL" -> RouteLineStyle.from(context, R.style.RouteNormalLineStyle)
-                                "BLOCK" -> RouteLineStyle.from(context, R.style.RouteBlockLineStyle)
-                                else -> RouteLineStyle.from(context, R.style.RouteUnknownLineStyle)
+                        /* 마커 표시 */
+                        val departMarkerStyles: LabelStyles? = map.labelManager
+                            ?.addLabelStyles(LabelStyles.from(LabelStyle.from(com.example.kakomobilityassignment.R.drawable.depart_img)))
+
+                        val arriveMarkerStyles: LabelStyles? = map.labelManager
+                            ?.addLabelStyles(LabelStyles.from(LabelStyle.from(com.example.kakomobilityassignment.R.drawable.arrive_img)))
+
+                        val departOptions =
+                            LabelOptions.from(LatLng.from(37.396226781360426, 127.10968100356395))
+                                .setStyles(departMarkerStyles)
+
+                        val arriveOptions =
+                            LabelOptions.from(LatLng.from(37.396226781360426, 127.10968100356395))
+                                .setStyles(arriveMarkerStyles)
+
+                        map.labelManager?.layer?.addLabel(departOptions)
+                        map.labelManager?.layer?.addLabel(arriveOptions)
+
+                        /* 도로 색상 표시 */
+                        val segmentList: List<RouteLineSegment> =
+                            assignLatLngList.mapIndexed { idx, assignLatLng ->
+
+                                val style = when (trafficStateList.getOrNull(idx)) {
+                                    "UNKNOWN" -> RouteLineStyle.from(
+                                        context,
+                                        com.example.kakomobilityassignment.R.style.RouteUnknownLineStyle
+                                    )
+
+                                    "JAM" -> RouteLineStyle.from(
+                                        context,
+                                        com.example.kakomobilityassignment.R.style.RouteJamLineStyle
+                                    )
+
+                                    "DELAY" -> RouteLineStyle.from(
+                                        context,
+                                        com.example.kakomobilityassignment.R.style.RouteDelayLineStyle
+                                    )
+
+                                    "SLOW" -> RouteLineStyle.from(
+                                        context,
+                                        com.example.kakomobilityassignment.R.style.RouteSlowLineStyle
+                                    )
+
+                                    "NORMAL" -> RouteLineStyle.from(
+                                        context,
+                                        com.example.kakomobilityassignment.R.style.RouteNormalLineStyle
+                                    )
+
+                                    "BLOCK" -> RouteLineStyle.from(
+                                        context,
+                                        com.example.kakomobilityassignment.R.style.RouteBlockLineStyle
+                                    )
+
+                                    else -> RouteLineStyle.from(
+                                        context,
+                                        com.example.kakomobilityassignment.R.style.RouteUnknownLineStyle
+                                    )
+                                }
+
+                                val routePoints = assignLatLng.map { e ->
+                                    LatLng.from(e.longitude, e.latitude)
+                                }
+
+                                RouteLineSegment.from(routePoints, style)
                             }
-
-                            val routePoints = assignLatLng.map { e ->
-                                LatLng.from(e.longitude, e.latitude)
-                            }
-
-                            RouteLineSegment.from(routePoints, style)
-                        }
 
                         val routeLineOptions = RouteLineOptions.from(segmentList)
                         map.routeLineManager?.layer?.addRouteLine(routeLineOptions)
