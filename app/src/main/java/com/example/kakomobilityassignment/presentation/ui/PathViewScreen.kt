@@ -23,6 +23,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.kakomobilityassignment.AssignLatLng
 import com.example.kakomobilityassignment.presentation.KakaoMobilityScreenTemplate
+import com.example.kakomobilityassignment.presentation.common.LoadingScreen
 import com.example.kakomobilityassignment.presentation.viewModel.PathViewModel
 import com.example.kakomobilityassignment.ui.theme.TimeDistanceBoxColor
 import com.kakao.vectormap.KakaoMap
@@ -102,9 +103,9 @@ fun PathViewScreen(
                 )
             }
         })
-    } else {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(text = "로딩중")
+    } else{
+        KakaoMobilityScreenTemplate {
+            LoadingScreen()
         }
     }
 
