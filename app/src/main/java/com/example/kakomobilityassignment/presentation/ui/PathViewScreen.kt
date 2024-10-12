@@ -1,6 +1,5 @@
 package com.example.kakomobilityassignment.presentation.ui
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,6 +30,7 @@ import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
+import com.kakao.vectormap.camera.CameraUpdateFactory
 import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
@@ -82,10 +82,8 @@ fun PathViewScreen(
             assignLatLngList.add(tempList)
             trafficStateList.add(locationPath.trafficState)
         }
-
         isDataLoaded = true
     }
-
 
     if (isDataLoaded) {
         KakaoMobilityScreenTemplate(screenContent = {
@@ -139,6 +137,7 @@ private fun KakaoMapScreen(
 ) {
     AndroidView(
         factory = { context ->
+
             val mapView = MapView(context)
 
             mapView.start(
@@ -147,17 +146,37 @@ private fun KakaoMapScreen(
                     override fun onMapError(error: Exception) {}
                 },
                 object : KakaoMapReadyCallback() {
+
+                    override fun getPosition(): LatLng {
+
+                        val initCameraLatLng = AssignLatLng(
+                            latitude = assignLatLngList[assignLatLngList.size / 2].firstOrNull()?.latitude
+                                ?: 0.0,
+                            longitude = assignLatLngList[assignLatLngList.size / 2].firstOrNull()?.longitude
+                                ?: 0.0
+                        )
+
+                        return LatLng.from(initCameraLatLng.latitude, initCameraLatLng.longitude)
+                    }
+
+                    override fun getZoomLevel(): Int {
+                        return 10;
+                    }
+
                     override fun onMapReady(map: KakaoMap) {
 
                         /* 마커 표시 */
                         val departMarkerLatLng = AssignLatLng(
-                            latitude = assignLatLngList.firstOrNull()?.firstOrNull()?.latitude ?: 0.0,
-                            longitude = assignLatLngList.firstOrNull()?.firstOrNull()?.longitude ?: 0.0
+                            latitude = assignLatLngList.firstOrNull()?.firstOrNull()?.latitude
+                                ?: 0.0,
+                            longitude = assignLatLngList.firstOrNull()?.firstOrNull()?.longitude
+                                ?: 0.0
                         )
 
                         val arriveMarkerLatLng = AssignLatLng(
                             latitude = assignLatLngList.lastOrNull()?.lastOrNull()?.latitude ?: 0.0,
-                            longitude = assignLatLngList.lastOrNull()?.lastOrNull()?.longitude ?: 0.0
+                            longitude = assignLatLngList.lastOrNull()?.lastOrNull()?.longitude
+                                ?: 0.0
                         )
 
                         val departMarkerStyles: LabelStyles? = map.labelManager
@@ -167,11 +186,21 @@ private fun KakaoMapScreen(
                             ?.addLabelStyles(LabelStyles.from(LabelStyle.from(com.example.kakomobilityassignment.R.drawable.arrive_img)))
 
                         val departOptions =
-                            LabelOptions.from(LatLng.from(departMarkerLatLng.latitude, departMarkerLatLng.longitude))
+                            LabelOptions.from(
+                                LatLng.from(
+                                    departMarkerLatLng.latitude,
+                                    departMarkerLatLng.longitude
+                                )
+                            )
                                 .setStyles(departMarkerStyles)
 
                         val arriveOptions =
-                            LabelOptions.from(LatLng.from(arriveMarkerLatLng.latitude, arriveMarkerLatLng.longitude))
+                            LabelOptions.from(
+                                LatLng.from(
+                                    arriveMarkerLatLng.latitude,
+                                    arriveMarkerLatLng.longitude
+                                )
+                            )
                                 .setStyles(arriveMarkerStyles)
 
                         map.labelManager?.layer?.addLabel(departOptions)
@@ -228,10 +257,6 @@ private fun KakaoMapScreen(
 
                         val routeLineOptions = RouteLineOptions.from(segmentList)
                         map.routeLineManager?.layer?.addRouteLine(routeLineOptions)
-                    }
-
-                    override fun getZoomLevel(): Int {
-                        return 10;
                     }
                 },
             )
