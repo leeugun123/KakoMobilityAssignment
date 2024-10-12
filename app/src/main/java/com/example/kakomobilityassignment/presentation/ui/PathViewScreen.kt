@@ -54,7 +54,6 @@ fun PathViewScreen(
     val locationPathListErrorMessage by pathViewModel.locationPathListErrorMessage.collectAsStateWithLifecycle()
 
     val locationTimeDistance by pathViewModel.locationTimeDistance.collectAsStateWithLifecycle()
-    val locationTimeDistanceErrorMessage by pathViewModel.locationTimeErrorMessage.collectAsStateWithLifecycle()
 
     val trafficStateList: MutableList<String> = remember { mutableListOf() }
     val assignLatLngList: MutableList<MutableList<AssignLatLng>> = remember { mutableListOf() }
@@ -69,7 +68,7 @@ fun PathViewScreen(
 
         delay(1000L)
 
-        if(locationPathList.isEmpty()){
+        if (locationPathList.isEmpty()) {
             isFailLoadData = true
             return@LaunchedEffect
         }
@@ -97,7 +96,7 @@ fun PathViewScreen(
     }
 
     KakaoMobilityScreenTemplate(screenContent = {
-        if(isDataLoaded){
+        if (isDataLoaded) {
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
@@ -110,10 +109,24 @@ fun PathViewScreen(
                     distance = formatNumberWithCommasAndMinute(locationTimeDistance.distance)
                 )
             }
-        }
-        else if(isFailLoadData)
-            LoadDataFailScreen(place = "$origin ~ $destination")
-        else
+        } else if (isFailLoadData) {
+
+            var message = ""
+            locationPathListErrorMessage?.forEach { idx ->
+                message += idx
+            }
+
+            Log.e("TAG", message)
+
+            val (code, errorMessage) = extractCodeAndMessage(message)
+            Log.e("TAG",code.toString())
+            Log.e("TAG",errorMessage.toString())
+            LoadDataFailScreen(
+                place = "$origin ~ $destination",
+                code = code.toString(),
+                errorMessage = errorMessage.toString()
+            )
+        } else
             LoadingScreen()
     })
 }
@@ -160,13 +173,16 @@ private fun KakaoMapScreen(
 
                         /* 출발, 도착 좌표 지정 */
                         val departMarkerLatLng = AssignLatLng(
-                            latitude = assignLatLngList.firstOrNull()?.firstOrNull()?.latitude ?: 0.0,
-                            longitude = assignLatLngList.firstOrNull()?.firstOrNull()?.longitude ?: 0.0
+                            latitude = assignLatLngList.firstOrNull()?.firstOrNull()?.latitude
+                                ?: 0.0,
+                            longitude = assignLatLngList.firstOrNull()?.firstOrNull()?.longitude
+                                ?: 0.0
                         )
 
                         val arriveMarkerLatLng = AssignLatLng(
                             latitude = assignLatLngList.lastOrNull()?.lastOrNull()?.latitude ?: 0.0,
-                            longitude = assignLatLngList.lastOrNull()?.lastOrNull()?.longitude ?: 0.0
+                            longitude = assignLatLngList.lastOrNull()?.lastOrNull()?.longitude
+                                ?: 0.0
                         )
 
                         /* 카메라 경로 범위 이동 설정 */
@@ -277,3 +293,16 @@ private fun convertSecondsToTimeString(seconds: Int): String {
 
 private fun formatNumberWithCommasAndMinute(number: Int) =
     "%,d".format(number) + "m"
+
+private fun extractCodeAndMessage(response: String): Pair<Int?, String?> {
+    val codeRegex = Regex("""code=(\d+)""") // 코드 추출을 위한 정규 표현식
+    val messageRegex = Regex("""message=(.*?),""") // 메시지 추출을 위한 정규 표현식
+
+    val codeMatch = codeRegex.find(response) // code 찾기
+    val messageMatch = messageRegex.find(response) // message 찾기
+
+    val code = codeMatch?.groups?.get(1)?.value?.toInt() // 코드 값 변환
+    val message = messageMatch?.groups?.get(1)?.value // 메시지 값
+
+    return Pair(code, message)
+}

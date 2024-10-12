@@ -40,7 +40,7 @@ fun TitleBar() {
 }
 
 @Composable
-fun LoadDataFailScreen(place : String = "", code : String = "", errorMessage : String = "") {
+fun LoadDataFailScreen(place: String = "", code: String = "", errorMessage: String = "") {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -55,16 +55,25 @@ fun LoadDataFailScreen(place : String = "", code : String = "", errorMessage : S
         Spacer(modifier = Modifier.height(10.dp))
 
         Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-            LoadDataFailScreenRowBar(leftContent = stringResource(id = R.string.path), rightContent = place)
-            LoadDataFailScreenRowBar(leftContent = stringResource(id = R.string.code), rightContent = code)
-            LoadDataFailScreenRowBar(leftContent = stringResource(id = R.string.message), rightContent = errorMessage)
+            LoadDataFailScreenRowBar(
+                leftContent = stringResource(id = R.string.path),
+                rightContent = place
+            )
+            LoadDataFailScreenRowBar(
+                leftContent = stringResource(id = R.string.code),
+                rightContent = code
+            )
+            LoadDataFailScreenRowBar(
+                leftContent = stringResource(id = R.string.message),
+                rightContent = errorMessage.ifEmpty { "not_found" }
+            )
         }
     }
 }
 
 @Composable
-fun LoadDataFailScreenRowBar(leftContent : String , rightContent : String){
-    Row(horizontalArrangement = Arrangement.spacedBy(5.dp)){
+fun LoadDataFailScreenRowBar(leftContent: String, rightContent: String) {
+    Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
         Text(text = leftContent, fontSize = 25.sp)
         Text(text = rightContent, fontSize = 25.sp)
     }

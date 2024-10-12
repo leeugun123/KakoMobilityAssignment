@@ -60,12 +60,11 @@ class KakaoMobilityRepository {
                     if (response.isSuccessful) {
                         onSuccess(response.body() ?: emptyList())
                     } else {
-                        onError(Exception("Failed to load places"))
+                        onError(Exception(response.toString()))
                     }
                 }
 
                 override fun onFailure(call: Call<List<LocationPath>>, t: Throwable) {
-                    Log.e("TAG", t.toString())
                     onError(t)
                 }
             })
@@ -106,6 +105,8 @@ class KakaoMobilityRepository {
 
             })
     }
+
+
 
 
 }
