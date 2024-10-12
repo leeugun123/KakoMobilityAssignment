@@ -112,7 +112,7 @@ fun PathViewScreen(
             }
         }
         else if(isFailLoadData)
-            LoadDataFailScreen()
+            LoadDataFailScreen(place = "$origin ~ $destination")
         else
             LoadingScreen()
     })

@@ -3,4 +3,8 @@
     <string name="title_bar_content">카카오 모빌리티 과제 구현</string>
     <string name="depart_text">출발지 :</string>
     <string name="arrive_text">도착지 :</string>
+    <string name="fail_load_path_message">경로조회 실패</string>
+    <string name="path">경로 : </string>
+    <string name="code">code : </string>
+    <string name="message">message : </string>
 </resources>
