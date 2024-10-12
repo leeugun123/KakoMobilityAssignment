@@ -152,24 +152,109 @@ private fun KakaoMapScreen(
                 object : KakaoMapReadyCallback() {
                     override fun onMapReady(map: KakaoMap) {
 
-                        val writeRoutePoints = mutableListOf<LatLng>()
+                        val unknownRoutePoints = mutableListOf<LatLng>()
+                        val blockRoutePoints = mutableListOf<LatLng>()
+                        val jamRoutePoints = mutableListOf<LatLng>()
+                        val delayRoutePoints = mutableListOf<LatLng>()
+                        val slowRoutePoints = mutableListOf<LatLng>()
+                        val normalRoutePoints = mutableListOf<LatLng>()
 
-                        assignLatLngList.forEach { assignLatLng ->
+                        assignLatLngList.forEachIndexed { idx, assignLatLng ->
 
-                            assignLatLng.forEach { e ->
-                                writeRoutePoints.add(
-                                    LatLng.from(
-                                        e.longitude,
-                                        e.latitude,
-                                    )
-                                )
+                            val trafficState = trafficStateList[idx]
+
+                            when (trafficState) {
+
+                                "UNKNOWN" -> {
+                                    assignLatLng.forEach { e ->
+                                        unknownRoutePoints.add(
+                                            LatLng.from(
+                                                e.longitude,
+                                                e.latitude,
+                                            )
+                                        )
+                                    }
+                                }
+
+                                "JAM" -> {
+                                    assignLatLng.forEach { e ->
+                                        jamRoutePoints.add(
+                                            LatLng.from(
+                                                e.longitude,
+                                                e.latitude,
+                                            )
+                                        )
+                                    }
+                                }
+
+                                "DELAY" -> {
+                                    assignLatLng.forEach { e ->
+                                        delayRoutePoints.add(
+                                            LatLng.from(
+                                                e.longitude,
+                                                e.latitude,
+                                            )
+                                        )
+                                    }
+                                }
+
+                                "SLOW" -> {
+                                    assignLatLng.forEach { e ->
+                                        slowRoutePoints.add(
+                                            LatLng.from(
+                                                e.longitude,
+                                                e.latitude,
+                                            )
+                                        )
+                                    }
+                                }
+
+                                "NORMAL" -> {
+                                    assignLatLng.forEach { e ->
+                                        normalRoutePoints.add(
+                                            LatLng.from(
+                                                e.longitude,
+                                                e.latitude,
+                                            )
+                                        )
+                                    }
+                                }
+
+                                "BLOCK" -> {
+                                    assignLatLng.forEach { e ->
+                                        blockRoutePoints.add(
+                                            LatLng.from(
+                                                e.longitude,
+                                                e.latitude,
+                                            )
+                                        )
+                                    }
+                                }
                             }
                         }
 
-                        val style = RouteLineStyle.from(context, R.style.SimpleRouteLineStyle)
+                        val unknownStyle =
+                            RouteLineStyle.from(context, R.style.RouteUnknownLineStyle)
+                        val blockStyle = RouteLineStyle.from(context, R.style.RouteBlockLineStyle)
+                        val jamStyle = RouteLineStyle.from(context, R.style.RouteJamLineStyle)
+                        val delayStyle = RouteLineStyle.from(context, R.style.RouteDelayLineStyle)
+                        val slowStyle = RouteLineStyle.from(context, R.style.RouteSlowLineStyle)
+                        val normalStyle = RouteLineStyle.from(context, R.style.RouteNormalLineStyle)
 
-                        val routeLineSegment = RouteLineSegment.from(writeRoutePoints, style)
-                        val routeLineOptions = RouteLineOptions.from(listOf(routeLineSegment))
+                        val unknownSegment = RouteLineSegment.from(unknownRoutePoints, unknownStyle)
+                        val blockSegment = RouteLineSegment.from(blockRoutePoints, blockStyle)
+                        val jamSegment = RouteLineSegment.from(jamRoutePoints, jamStyle)
+                        val delaySegment = RouteLineSegment.from(delayRoutePoints, delayStyle)
+                        val slowSegment = RouteLineSegment.from(slowRoutePoints, slowStyle)
+                        val normalSegment = RouteLineSegment.from(normalRoutePoints, normalStyle)
+
+                        val routeLineOptions = RouteLineOptions.from(
+                            listOf(
+                                unknownSegment, slowSegment,
+                                normalSegment, delaySegment, jamSegment
+                            )
+                        )
+
                         map.routeLineManager!!.layer.addRouteLine(routeLineOptions)
                     }
 
