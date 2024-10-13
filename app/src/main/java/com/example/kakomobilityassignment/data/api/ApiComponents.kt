@@ -28,12 +28,6 @@ data class LocationTimeDistanceResponse(
     val time : Int
 )
 
-data class PathFailResponse(
-    @SerializedName("code")
-    val code: Int,
-    @SerializedName("errorMessage")
-    val errorMessage: String
-)
 
 
 
