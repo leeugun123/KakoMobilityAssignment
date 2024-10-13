@@ -1,6 +1,5 @@
 package com.example.kakomobilityassignment.presentation.ui
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,10 +18,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.kakomobilityassignment.AssignLatLng
+import com.example.kakomobilityassignment.R
 import com.example.kakomobilityassignment.presentation.KakaoMobilityScreenTemplate
 import com.example.kakomobilityassignment.presentation.common.LoadDataFailScreen
 import com.example.kakomobilityassignment.presentation.common.LoadingScreen
@@ -51,7 +53,7 @@ fun PathViewScreen(
     destination: String
 ) {
     val locationPathList by pathViewModel.locationPathList.collectAsStateWithLifecycle()
-    val locationPathListErrorMessage by pathViewModel.locationPathListErrorMessage.collectAsStateWithLifecycle()
+    val locationPathListErrorCode by pathViewModel.locationPathListErrorCode.collectAsStateWithLifecycle()
 
     val locationTimeDistance by pathViewModel.locationTimeDistance.collectAsStateWithLifecycle()
 
@@ -111,20 +113,24 @@ fun PathViewScreen(
             }
         } else if (isFailLoadData) {
 
-            var message = ""
-            locationPathListErrorMessage?.forEach { idx ->
-                message += idx
+            val context = LocalContext.current
+
+            var errorMessage = when (locationPathListErrorCode) {
+                400 -> context.getString(R.string.error_400)
+                401 -> context.getString(R.string.error_401)
+                403 -> context.getString(R.string.error_403)
+                404 -> context.getString(R.string.error_404)
+                500 -> context.getString(R.string.error_500)
+                else -> "알 수 없는 오류가 발생했습니다.\n 오류 코드: $locationPathListErrorCode"
             }
 
-            Log.e("TAG", message)
+            if(locationPathListErrorCode == 0)
+                errorMessage = stringResource(id = R.string.empty_error_code_message)
 
-            val (code, errorMessage) = extractCodeAndMessage(message)
-            Log.e("TAG",code.toString())
-            Log.e("TAG",errorMessage.toString())
             LoadDataFailScreen(
                 place = "$origin ~ $destination",
-                code = code.toString(),
-                errorMessage = errorMessage.toString()
+                code = locationPathListErrorCode,
+                errorMessage = errorMessage
             )
         } else
             LoadingScreen()

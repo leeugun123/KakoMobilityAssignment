@@ -15,21 +15,13 @@ class LocationListViewModel() : ViewModel() {
     private val _locationList = MutableStateFlow<List<Location>>(emptyList())
     val locationList: StateFlow<List<Location>> get() = _locationList
 
-    private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: StateFlow<String?> get() = _errorMessage
-
-    init {
-        fetchPlaces()
-    }
+    init { fetchPlaces() }
 
     private fun fetchPlaces() {
         viewModelScope.launch {
             repository.getLocationNameList(
                 onSuccess = { locationList ->
                     _locationList.value = locationList
-                },
-                onError = { throwable ->
-                    _errorMessage.value = throwable.message
                 }
             )
         }

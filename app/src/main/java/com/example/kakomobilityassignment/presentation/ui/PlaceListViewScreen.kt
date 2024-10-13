@@ -36,13 +36,8 @@ fun PlaceListViewScreen(
     navigationToPathView: (origin: String, destination: String) -> Unit
 ) {
     val locationList by locationListViewModel.locationList.collectAsStateWithLifecycle()
-    val errorMessage by locationListViewModel.errorMessage.collectAsStateWithLifecycle()
 
     KakaoMobilityScreenTemplate(screenContent = {
-        if (errorMessage != null) {
-            Text(text = "Error: $errorMessage", modifier = Modifier.padding(16.dp))
-        }
-
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(locationList) { locationInfo ->
                 LocationNameComponent(

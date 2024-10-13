@@ -1,6 +1,5 @@
 package com.example.kakomobilityassignment.data.repository
 
-import android.util.Log
 import com.example.kakomobilityassignment.data.KakaoMobilityApiService
 import com.example.kakomobilityassignment.data.Location
 import com.example.kakomobilityassignment.data.LocationListResponse
@@ -21,7 +20,6 @@ class KakaoMobilityRepository {
 
     fun getLocationNameList(
         onSuccess: (List<Location>) -> Unit,
-        onError: (Throwable) -> Unit
     ) {
         kakaoMobilityApiService.getLocationsNameList()
             .enqueue(object : Callback<LocationListResponse> {
@@ -31,14 +29,10 @@ class KakaoMobilityRepository {
                 ) {
                     if (response.isSuccessful) {
                         onSuccess(response.body()?.locationList ?: emptyList())
-                    } else {
-                        onError(Exception("Failed to load places"))
                     }
                 }
 
-                override fun onFailure(call: Call<LocationListResponse>, t: Throwable) {
-                    onError(t)
-                }
+                override fun onFailure(call: Call<LocationListResponse>, t: Throwable) {}
             })
     }
 
@@ -46,7 +40,7 @@ class KakaoMobilityRepository {
         requestedOrigin: String,
         requestedDestination: String,
         onSuccess: (List<LocationPath>) -> Unit,
-        onError: (Throwable) -> Unit
+        onError: (Int) -> Unit
     ) {
         kakaoMobilityApiService.getLocationPath(
             origin = requestedOrigin,
@@ -57,24 +51,20 @@ class KakaoMobilityRepository {
                     call: Call<List<LocationPath>>,
                     response: Response<List<LocationPath>>
                 ) {
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful)
                         onSuccess(response.body() ?: emptyList())
-                    } else {
-                        onError(Exception(response.toString()))
-                    }
+                    else
+                        onError(response.code())
                 }
 
-                override fun onFailure(call: Call<List<LocationPath>>, t: Throwable) {
-                    onError(t)
-                }
+                override fun onFailure(call: Call<List<LocationPath>>, t: Throwable) {}
             })
     }
 
     fun getLocationTimeDistance(
         requestedOrigin: String,
         requestedDestination: String,
-        onSuccess: (LocationTimeDistanceResponse) -> Unit,
-        onError: (Throwable) -> Unit
+        onSuccess: (LocationTimeDistanceResponse) -> Unit
     ) {
         kakaoMobilityApiService.getLocationTimeDistance(
             origin = requestedOrigin,
@@ -94,19 +84,12 @@ class KakaoMobilityRepository {
                                 time = locationTimeDistanceResponse.time
                             )
                         )
-                    } else {
-                        onError(Exception("Failed to Location TimeDistance"))
                     }
                 }
 
-                override fun onFailure(call: Call<LocationTimeDistanceResponse>, t: Throwable) {
-                    onError(t)
-                }
-
+                override fun onFailure(call: Call<LocationTimeDistanceResponse>, t: Throwable) {}
             })
     }
-
-
 
 
 }

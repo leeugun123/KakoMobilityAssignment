@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,11 +42,12 @@ fun TitleBar() {
 }
 
 @Composable
-fun LoadDataFailScreen(place: String = "", code: String = "", errorMessage: String = "") {
+fun LoadDataFailScreen(place: String = "", code: Int = 0, errorMessage: String = "") {
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = stringResource(id = R.string.fail_load_path_message),
@@ -52,7 +55,7 @@ fun LoadDataFailScreen(place: String = "", code: String = "", errorMessage: Stri
             fontWeight = FontWeight(800)
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
             LoadDataFailScreenRowBar(
@@ -61,11 +64,11 @@ fun LoadDataFailScreen(place: String = "", code: String = "", errorMessage: Stri
             )
             LoadDataFailScreenRowBar(
                 leftContent = stringResource(id = R.string.code),
-                rightContent = code
+                rightContent = code.toString()
             )
             LoadDataFailScreenRowBar(
                 leftContent = stringResource(id = R.string.message),
-                rightContent = errorMessage.ifEmpty { "not_found" }
+                rightContent = errorMessage.ifEmpty { stringResource(id = R.string.empty_error_message) }
             )
         }
     }
@@ -73,8 +76,11 @@ fun LoadDataFailScreen(place: String = "", code: String = "", errorMessage: Stri
 
 @Composable
 fun LoadDataFailScreenRowBar(leftContent: String, rightContent: String) {
-    Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(start = 40.dp)) {
         Text(text = leftContent, fontSize = 25.sp)
+        Spacer(modifier = Modifier.width(10.dp))
         Text(text = rightContent, fontSize = 25.sp)
     }
 }

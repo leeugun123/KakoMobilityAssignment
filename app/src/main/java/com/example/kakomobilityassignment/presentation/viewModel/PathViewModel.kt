@@ -16,8 +16,8 @@ class PathViewModel : ViewModel() {
     private val _locationPathList = MutableStateFlow<List<LocationPath>>(emptyList())
     val locationPathList : StateFlow<List<LocationPath>> get() = _locationPathList
 
-    private val _locationPathListErrorMessage = MutableStateFlow<String?>(null)
-    val locationPathListErrorMessage: StateFlow<String?> get() = _locationPathListErrorMessage
+    private val _locationPathListErrorCode = MutableStateFlow(0)
+    val locationPathListErrorCode: StateFlow<Int> get() = _locationPathListErrorCode
 
     private val _locationTimeDistance = MutableStateFlow(LocationTimeDistanceResponse(0, 0))
     val locationTimeDistance: StateFlow<LocationTimeDistanceResponse> get() = _locationTimeDistance
@@ -30,8 +30,8 @@ class PathViewModel : ViewModel() {
                 onSuccess = { locationPathList ->
                     _locationPathList.value = locationPathList
                 },
-                onError = { throwable ->
-                    _locationPathListErrorMessage.value = throwable.message
+                onError = { errorCode ->
+                    _locationPathListErrorCode.value = errorCode
                 }
             )
         }
@@ -44,8 +44,7 @@ class PathViewModel : ViewModel() {
                 requestedDestination = destination,
                 onSuccess = { locationTimeDistance ->
                     _locationTimeDistance.value = locationTimeDistance
-                },
-                onError = {}
+                }
             )
         }
     }
