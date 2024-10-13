@@ -25,13 +25,5 @@ interface KakaoMobilityApiService {
         @Query("origin") origin : String,
         @Query("destination") destination : String,
     ) : Call<LocationTimeDistanceResponse>
-
-    @GET("coding-assignment/routes")
-    fun getFailLoadPath(
-        @Query("origin") origin : String,
-        @Query("destination") destination : String,
-    ) : Call<PathFailResponse>
-
-
 }
 
