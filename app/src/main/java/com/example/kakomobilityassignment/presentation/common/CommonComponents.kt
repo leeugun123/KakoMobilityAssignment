@@ -64,7 +64,7 @@ fun LoadDataFailScreen(place: String = "", code: Int = 0, errorMessage: String =
             )
             LoadDataFailScreenRowBar(
                 leftContent = stringResource(id = R.string.code),
-                rightContent = code.toString()
+                rightContent = if(code == 0) "" else code.toString()
             )
             LoadDataFailScreenRowBar(
                 leftContent = stringResource(id = R.string.message),

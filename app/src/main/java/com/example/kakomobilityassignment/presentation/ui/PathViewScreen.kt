@@ -117,16 +117,16 @@ fun PathViewScreen(
             val context = LocalContext.current
 
             var errorMessage = when (locationPathListErrorCode) {
-                400 -> context.getString(R.string.error_400)
-                401 -> context.getString(R.string.error_401)
-                403 -> context.getString(R.string.error_403)
-                404 -> context.getString(R.string.error_404)
-                500 -> context.getString(R.string.error_500)
+                400 -> context.getString(R.string.error_400_message)
+                401 -> context.getString(R.string.error_401_message)
+                403 -> context.getString(R.string.error_403_message)
+                404 -> context.getString(R.string.error_404_message)
+                500 -> context.getString(R.string.error_500_message)
                 else -> "알 수 없는 오류가 발생했습니다.\n 오류 코드: $locationPathListErrorCode"
             }
 
             if (locationPathListErrorCode == 0)
-                errorMessage = stringResource(id = R.string.empty_error_code_message)
+                errorMessage = stringResource(id = R.string.internet_connect_fail_message)
 
             LoadDataFailScreen(
                 place = "$origin ~ $destination",
