@@ -25,10 +25,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.kakomobilityassignment.R
-import com.example.kakomobilityassignment.data.Location
+import com.example.kakomobilityassignment.data.api.Location
 import com.example.kakomobilityassignment.presentation.KakaoMobilityScreenTemplate
 import com.example.kakomobilityassignment.presentation.viewModel.LocationListViewModel
-import com.example.kakomobilityassignment.presentation.viewModel.PathViewModel
 import com.example.kakomobilityassignment.ui.theme.ArrivePlaceColor
 import com.example.kakomobilityassignment.ui.theme.DepartPlaceColor
 

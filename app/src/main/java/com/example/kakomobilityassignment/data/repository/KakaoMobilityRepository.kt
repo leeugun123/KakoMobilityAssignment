@@ -1,10 +1,10 @@
 package com.example.kakomobilityassignment.data.repository
 
-import com.example.kakomobilityassignment.data.KakaoMobilityApiService
-import com.example.kakomobilityassignment.data.Location
-import com.example.kakomobilityassignment.data.LocationListResponse
-import com.example.kakomobilityassignment.data.LocationPath
-import com.example.kakomobilityassignment.data.LocationTimeDistanceResponse
+import com.example.kakomobilityassignment.data.api.KakaoMobilityApiService
+import com.example.kakomobilityassignment.data.api.Location
+import com.example.kakomobilityassignment.data.api.LocationListResponse
+import com.example.kakomobilityassignment.data.api.LocationPath
+import com.example.kakomobilityassignment.data.api.LocationTimeDistanceResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

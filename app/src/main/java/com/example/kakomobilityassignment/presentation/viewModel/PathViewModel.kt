@@ -2,8 +2,8 @@ package com.example.kakomobilityassignment.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kakomobilityassignment.data.LocationPath
-import com.example.kakomobilityassignment.data.LocationTimeDistanceResponse
+import com.example.kakomobilityassignment.data.api.LocationPath
+import com.example.kakomobilityassignment.data.api.LocationTimeDistanceResponse
 import com.example.kakomobilityassignment.data.repository.KakaoMobilityRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

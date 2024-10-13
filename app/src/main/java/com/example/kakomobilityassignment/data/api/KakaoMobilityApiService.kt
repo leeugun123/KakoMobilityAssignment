@@ -1,4 +1,4 @@
-package com.example.kakomobilityassignment.data
+package com.example.kakomobilityassignment.data.api
 
 import com.example.kakomobilityassignment.BuildConfig
 import retrofit2.Call

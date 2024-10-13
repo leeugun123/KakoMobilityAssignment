@@ -1,4 +1,4 @@
-package com.example.kakomobilityassignment.data
+package com.example.kakomobilityassignment.data.api
 
 import dagger.Module
 import dagger.Provides
