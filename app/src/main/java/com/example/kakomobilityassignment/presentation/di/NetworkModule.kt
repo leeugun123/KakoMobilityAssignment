@@ -1,5 +1,6 @@
-package com.example.kakomobilityassignment.data.api
+package com.example.kakomobilityassignment.presentation.di
 
+import com.example.kakomobilityassignment.data.api.KakaoMobilityApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
