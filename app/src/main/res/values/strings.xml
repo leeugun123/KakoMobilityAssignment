@@ -6,6 +6,8 @@
     <string name="fail_load_path_message">경로조회 실패</string>
     <string name="path">경로 : </string>
     <string name="code">code : </string>
+    <string name="time">시간 : </string>
+    <string name="distance">거리 : </string>
     <string name="message">message : </string>
     <string name="empty_error_message">errorMessage is Empty</string>
     <string name="error_400">잘못된 요청입니다.\n요청 파라미터를 확인하세요.</string>

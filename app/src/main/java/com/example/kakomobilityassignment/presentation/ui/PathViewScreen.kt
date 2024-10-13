@@ -63,17 +63,19 @@ fun PathViewScreen(
     var isDataLoaded by remember { mutableStateOf(false) }
     var isFailLoadData by remember { mutableStateOf(false) }
 
+    pathViewModel.fetchLocationTimeDistance(origin = origin, destination = destination)
+    pathViewModel.fetchLocationPathList(origin = origin, destination = destination)
+
     LaunchedEffect(Unit) {
-
-        pathViewModel.fetchLocationTimeDistance(origin = origin, destination = destination)
-        pathViewModel.fetchLocationPathList(origin = origin, destination = destination)
-
-        delay(1000L)
-
-        if (locationPathList.isEmpty()) {
+        delay(2000L)
+        if (locationPathList.isEmpty())
             isFailLoadData = true
+    }
+
+    LaunchedEffect(locationPathList) {
+
+        if (locationPathList.isEmpty())
             return@LaunchedEffect
-        }
 
         locationPathList.forEach { locationPath ->
 
@@ -93,7 +95,6 @@ fun PathViewScreen(
             assignLatLngList.add(tempList)
             trafficStateList.add(locationPath.trafficState)
         }
-
         isDataLoaded = true
     }
 
@@ -124,7 +125,7 @@ fun PathViewScreen(
                 else -> "알 수 없는 오류가 발생했습니다.\n 오류 코드: $locationPathListErrorCode"
             }
 
-            if(locationPathListErrorCode == 0)
+            if (locationPathListErrorCode == 0)
                 errorMessage = stringResource(id = R.string.empty_error_code_message)
 
             LoadDataFailScreen(
@@ -132,6 +133,7 @@ fun PathViewScreen(
                 code = locationPathListErrorCode,
                 errorMessage = errorMessage
             )
+
         } else
             LoadingScreen()
     })
@@ -152,8 +154,8 @@ fun TimeDistanceBox(time: String, distance: String) {
                 .padding(start = 20.dp),
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "시간 : $time", color = Color.Yellow)
-            Text(text = "거리 : $distance", color = Color.Yellow)
+            Text(text = stringResource(id = R.string.time) + " " + time, color = Color.Yellow)
+            Text(text = stringResource(id = R.string.distance) + " " + distance, color = Color.Yellow)
         }
     }
 }
@@ -237,32 +239,32 @@ private fun KakaoMapScreen(
 
                                     "JAM" -> RouteLineStyle.from(
                                         context,
-                                        com.example.kakomobilityassignment.R.style.RouteJamLineStyle
+                                        R.style.RouteJamLineStyle
                                     )
 
                                     "DELAY" -> RouteLineStyle.from(
                                         context,
-                                        com.example.kakomobilityassignment.R.style.RouteDelayLineStyle
+                                        R.style.RouteDelayLineStyle
                                     )
 
                                     "SLOW" -> RouteLineStyle.from(
                                         context,
-                                        com.example.kakomobilityassignment.R.style.RouteSlowLineStyle
+                                        R.style.RouteSlowLineStyle
                                     )
 
                                     "NORMAL" -> RouteLineStyle.from(
                                         context,
-                                        com.example.kakomobilityassignment.R.style.RouteNormalLineStyle
+                                        R.style.RouteNormalLineStyle
                                     )
 
                                     "BLOCK" -> RouteLineStyle.from(
                                         context,
-                                        com.example.kakomobilityassignment.R.style.RouteBlockLineStyle
+                                        R.style.RouteBlockLineStyle
                                     )
 
                                     else -> RouteLineStyle.from(
                                         context,
-                                        com.example.kakomobilityassignment.R.style.RouteUnknownLineStyle
+                                        R.style.RouteUnknownLineStyle
                                     )
                                 }
 
@@ -299,16 +301,3 @@ private fun convertSecondsToTimeString(seconds: Int): String {
 
 private fun formatNumberWithCommasAndMinute(number: Int) =
     "%,d".format(number) + "m"
-
-private fun extractCodeAndMessage(response: String): Pair<Int?, String?> {
-    val codeRegex = Regex("""code=(\d+)""") // 코드 추출을 위한 정규 표현식
-    val messageRegex = Regex("""message=(.*?),""") // 메시지 추출을 위한 정규 표현식
-
-    val codeMatch = codeRegex.find(response) // code 찾기
-    val messageMatch = messageRegex.find(response) // message 찾기
-
-    val code = codeMatch?.groups?.get(1)?.value?.toInt() // 코드 값 변환
-    val message = messageMatch?.groups?.get(1)?.value // 메시지 값
-
-    return Pair(code, message)
-}
