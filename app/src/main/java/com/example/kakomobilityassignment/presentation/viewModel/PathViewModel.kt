@@ -5,13 +5,16 @@ import androidx.lifecycle.viewModelScope
 import com.example.kakomobilityassignment.data.LocationPath
 import com.example.kakomobilityassignment.data.LocationTimeDistanceResponse
 import com.example.kakomobilityassignment.data.repository.KakaoMobilityRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PathViewModel : ViewModel() {
-
-    private val repository = KakaoMobilityRepository()
+@HiltViewModel
+class PathViewModel @Inject constructor(
+    private val kakaoMobilityRepository: KakaoMobilityRepository
+) : ViewModel() {
 
     private val _locationPathList = MutableStateFlow<List<LocationPath>>(emptyList())
     val locationPathList : StateFlow<List<LocationPath>> get() = _locationPathList
@@ -24,7 +27,7 @@ class PathViewModel : ViewModel() {
 
     fun fetchLocationPathList(origin: String, destination: String) {
         viewModelScope.launch {
-            repository.getLocationPath(
+            kakaoMobilityRepository.getLocationPath(
                 requestedOrigin = origin,
                 requestedDestination = destination,
                 onSuccess = { locationPathList ->
@@ -39,7 +42,7 @@ class PathViewModel : ViewModel() {
 
     fun fetchLocationTimeDistance(origin: String, destination: String) {
         viewModelScope.launch {
-            repository.getLocationTimeDistance(
+            kakaoMobilityRepository.getLocationTimeDistance(
                 requestedOrigin = origin,
                 requestedDestination = destination,
                 onSuccess = { locationTimeDistance ->

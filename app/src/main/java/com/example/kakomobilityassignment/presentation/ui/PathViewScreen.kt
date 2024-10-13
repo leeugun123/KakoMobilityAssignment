@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.kakomobilityassignment.AssignLatLng
 import com.example.kakomobilityassignment.R
@@ -48,7 +49,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun PathViewScreen(
-    pathViewModel: PathViewModel = PathViewModel(),
+    pathViewModel: PathViewModel = hiltViewModel(),
     origin: String,
     destination: String
 ) {

@@ -3,6 +3,12 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt)
+    kotlin("kapt")
+}
+
+hilt {
+    enableAggregatingTask = false
 }
 
 val properties = Properties().apply {
@@ -92,4 +98,9 @@ dependencies {
 
     //카카오 맵
     implementation(libs.kakao.maps)
+
+    //Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
 }

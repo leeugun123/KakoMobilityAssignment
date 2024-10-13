@@ -4,13 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kakomobilityassignment.data.Location
 import com.example.kakomobilityassignment.data.repository.KakaoMobilityRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LocationListViewModel() : ViewModel() {
-
-    private val repository = KakaoMobilityRepository()
+@HiltViewModel
+class LocationListViewModel @Inject constructor(
+    private val kakaoMobilityRepository: KakaoMobilityRepository
+) : ViewModel() {
 
     private val _locationList = MutableStateFlow<List<Location>>(emptyList())
     val locationList: StateFlow<List<Location>> get() = _locationList
@@ -19,7 +22,7 @@ class LocationListViewModel() : ViewModel() {
 
     private fun fetchPlaces() {
         viewModelScope.launch {
-            repository.getLocationNameList(
+            kakaoMobilityRepository.getLocationNameList(
                 onSuccess = { locationList ->
                     _locationList.value = locationList
                 }

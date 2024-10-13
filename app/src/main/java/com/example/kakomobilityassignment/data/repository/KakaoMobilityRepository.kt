@@ -8,15 +8,11 @@ import com.example.kakomobilityassignment.data.LocationTimeDistanceResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
-class KakaoMobilityRepository {
-
-    private val kakaoMobilityApiService: KakaoMobilityApiService = Retrofit.Builder()
-        .baseUrl("https://taxi-openapi.sandbox.onkakao.net/api/v1/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build().create(KakaoMobilityApiService::class.java)
+class KakaoMobilityRepository @Inject constructor(
+    private val kakaoMobilityApiService: KakaoMobilityApiService
+) {
 
     fun getLocationNameList(
         onSuccess: (List<Location>) -> Unit,

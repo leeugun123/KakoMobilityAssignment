@@ -11,7 +11,9 @@ import androidx.core.view.WindowCompat
 import com.example.kakomobilityassignment.presentation.viewModel.LocationListViewModel
 import com.example.kakomobilityassignment.ui.theme.KakoMobilityAssignmentTheme
 import com.kakao.vectormap.KakaoMapSdk
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

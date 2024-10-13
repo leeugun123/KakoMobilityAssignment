@@ -22,17 +22,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.kakomobilityassignment.R
 import com.example.kakomobilityassignment.data.Location
 import com.example.kakomobilityassignment.presentation.KakaoMobilityScreenTemplate
 import com.example.kakomobilityassignment.presentation.viewModel.LocationListViewModel
+import com.example.kakomobilityassignment.presentation.viewModel.PathViewModel
 import com.example.kakomobilityassignment.ui.theme.ArrivePlaceColor
 import com.example.kakomobilityassignment.ui.theme.DepartPlaceColor
 
 @Composable
 fun PlaceListViewScreen(
-    locationListViewModel: LocationListViewModel,
+    locationListViewModel: LocationListViewModel = hiltViewModel(),
     navigationToPathView: (origin: String, destination: String) -> Unit
 ) {
     val locationList by locationListViewModel.locationList.collectAsStateWithLifecycle()
